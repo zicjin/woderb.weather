@@ -11,7 +11,7 @@ app.toggleAddDialog = function(visible) {
 
 // Updates a weather card with the latest weather forecast. If the card
 // doesn't already exist, it's cloned from the template.
-app.updateForecastCard = function(data) {
+app.updateForecastCard = function(data, name) {
   var dataLastUpdated = new Date(data.created);
   var sunrise = data.channel.astronomy.sunrise;
   var sunset = data.channel.astronomy.sunset;
@@ -26,17 +26,14 @@ app.updateForecastCard = function(data) {
     card.querySelector('.location').textContent = data.label;
     card.removeAttribute('hidden');
     app.container.appendChild(card);
+    card.name = name;
     app.visibleCards[data.key] = card;
   }
 
-  // Verifies the data provide is newer than what's already visible
-  // on the card, if it's not bail, if it is, continue and update the
-  // time saved in the card
   var cardLastUpdatedElem = card.querySelector('.card-last-updated');
   var cardLastUpdated = cardLastUpdatedElem.textContent;
   if (cardLastUpdated) {
     cardLastUpdated = new Date(cardLastUpdated);
-    // Bail if the card has more recent data then the data
     if (dataLastUpdated.getTime() < cardLastUpdated.getTime()) {
       return;
     }
@@ -46,14 +43,11 @@ app.updateForecastCard = function(data) {
   card.querySelector('.description').textContent = current.text;
   card.querySelector('.date').textContent = current.date;
   card.querySelector('.current .icon').classList.add(app.getIconClass(current.code));
-  card.querySelector('.current .temperature .value').textContent =
-    Math.round(current.temp);
+  card.querySelector('.current .temperature .value').textContent = Math.round(current.temp);
   card.querySelector('.current .sunrise').textContent = sunrise;
   card.querySelector('.current .sunset').textContent = sunset;
-  card.querySelector('.current .humidity').textContent =
-    Math.round(humidity) + '%';
-  card.querySelector('.current .wind .value').textContent =
-    Math.round(wind.speed);
+  card.querySelector('.current .humidity').textContent = Math.round(humidity) + '%';
+  card.querySelector('.current .wind .value').textContent = Math.round(wind.speed);
   card.querySelector('.current .wind .direction').textContent = wind.direction;
   var nextDays = card.querySelectorAll('.future .oneday');
   var today = new Date();
@@ -62,13 +56,10 @@ app.updateForecastCard = function(data) {
     var nextDay = nextDays[i];
     var daily = data.channel.item.forecast[i];
     if (daily && nextDay) {
-      nextDay.querySelector('.date').textContent =
-        app.daysOfWeek[(i + today) % 7];
+      nextDay.querySelector('.date').textContent = app.daysOfWeek[(i + today) % 7];
       nextDay.querySelector('.icon').classList.add(app.getIconClass(daily.code));
-      nextDay.querySelector('.temp-high .value').textContent =
-        Math.round(daily.high);
-      nextDay.querySelector('.temp-low .value').textContent =
-        Math.round(daily.low);
+      nextDay.querySelector('.temp-high .value').textContent = Math.round(daily.high);
+      nextDay.querySelector('.temp-low .value').textContent = Math.round(daily.low);
     }
   }
   if (app.isLoading) {
@@ -77,6 +68,31 @@ app.updateForecastCard = function(data) {
     app.isLoading = false;
   }
 };
+
+app.updateForecastWaqi = function (key, data) {
+  var card = app.visibleCards[key];
+  if (!card) return
+
+  var dataLastUpdated = new Date(data.time.v);
+  var aqiLastUpdatedElem = card.querySelector('.aqi-last-updated');
+  var aqiLastUpdated = aqiLastUpdatedElem.textContent;
+  if (aqiLastUpdated) {
+    aqiLastUpdated = new Date(aqiLastUpdated);
+    if (dataLastUpdated.getTime() < aqiLastUpdated.getTime()) {
+      return;
+    }
+  }
+  aqiLastUpdatedElem.textContent = data.time.v;
+
+  card.querySelector('.aqi_value').textContent = data.aqi;
+  // card.querySelector('.aqi_info').textContent = data.infocn;
+  // card.querySelector('.aqi_info2').textContent = data.info;
+  card.querySelector('.aqi_time').textContent = data.time.s;
+  if (app.isLoading) {
+    app.spinner.setAttribute('hidden', true);
+    app.isLoading = false;
+  }
+}
 
 app.getIconClass = function(weatherCode) {
   // Weather codes: https://developer.yahoo.com/weather/documentation.html#codes

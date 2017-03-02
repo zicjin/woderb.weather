@@ -122,6 +122,19 @@
           </div>
         </div>
       </div>
+      <div class="aqi-last-updated" hidden></div>
+      <div class="aqi_box">
+        <div class="aqi_current">
+          <div class="h3">AQI</div>
+          <div class="aqi_value"></div>
+        </div>
+        <div class="aqi_future">
+          <div class="">更新时间：</div>
+          <div class="aqi_info"></div>
+          <div class="aqi_info2"></div>
+          <div class="aqi_time"></div>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -131,15 +144,15 @@
       <div class="dialog-body">
         <select id="selectCityToAdd">
           <!-- Values map to Yahoo Weather API Where On Earth Identifiers (WOEIDs).
-              http://woeid.rosselliot.co.nz/
+              https://weather.codes/search/?q=hangzhou
               https://developer.yahoo.com/weather/documentation.html#req -->
-          <option value="2132574">杭州</option>
-          <option value="2151849">上海</option>
-          <option value="2151330">北京</option>
-          <option value="2137085">常州</option>
-          <option value="2161838">广州</option>
-          <option value="2161853">深圳</option>
-          <option value="2137081">南京</option>
+          <option value="2132574" name="hangzhou">杭州</option>
+          <option value="2151849" name="shanghai">上海</option>
+          <option value="2151330" name="beijin">北京</option>
+          <option value="2137085" name="changzhou">常州</option>
+          <option value="2161838" name="guangzhou">广州</option>
+          <option value="2161853" name="shenzhen">深圳</option>
+          <option value="2137081" name="nanjin">南京</option>
         </select>
       </div>
       <div class="dialog-buttons">

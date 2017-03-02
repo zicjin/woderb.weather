@@ -2,3 +2,13 @@ https://developers.google.com/web/fundamentals/getting-started/codelabs/your-fir
 
 add PM2.5
 http://aqicn.org/city/hangzhou/
+
+dev:
+http://aqicn.org/api/
+https://gist.github.com/rambolee/447d1165964dca7e3dfbd939da6986cb
+
+# Todo：
+升级AQI爬取数据：
+https://github.com/ctgnauh/aqicn
+
+更换Yahoo，居然不支持中文

@@ -3,7 +3,7 @@
 app.selectedCities = localStorage.selectedCities;
 if (!app.selectedCities) {
   app.selectedCities = [
-    {key: "2132574", label: "杭州"}
+    {key: "2132574", label: "杭州", name:"hangzhou"}
   ];
   app.saveSelectedCities();
 } else {
@@ -11,7 +11,7 @@ if (!app.selectedCities) {
 }
 
 app.selectedCities.forEach(function(city) {
-  app.getForecast(city.key, city.label);
+  app.getForecast(city.key, city.label, city.name);
 });
 
 // TODO add service worker code here
