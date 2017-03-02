@@ -1,14 +1,15 @@
 // TODO add startup code here
 
 app.selectedCities = localStorage.selectedCities;
-if (app.selectedCities) {
+if (!app.selectedCities) {
   app.selectedCities = [
     {key: "2132574", label: "杭州"}
   ];
   app.saveSelectedCities();
+} else {
+  app.selectedCities = JSON.parse(app.selectedCities);
 }
 
-app.selectedCities = JSON.parse(app.selectedCities);
 app.selectedCities.forEach(function(city) {
   app.getForecast(city.key, city.label);
 });
